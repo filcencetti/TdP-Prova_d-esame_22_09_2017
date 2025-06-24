@@ -24,25 +24,19 @@ class View(ft.UserControl):
         self._title = ft.Text("TdP Lab 13 - simulazione esame", color="blue", size=24)
         self._page.controls.append(self._title)
 
-        self._txtIntK = ft.TextField(label="Dimensione K")
-        self._btnCerca = ft.ElevatedButton(text="Cerca Dream Team",
-                                           on_click=self._controller.handleCerca)
+        self._ddSeason = ft.Dropdown(label="Stagione")
+        self._controller.fillDDSeason()
+        self._btnSelectedSeason = ft.ElevatedButton(text="Seleziona stagione", on_click=self._controller.handleSelectedSeason)
 
-        self._ddAnno = ft.Dropdown(label="Anno", on_change=self.disable_row)
-        self._controller.fillDDYear()
-        self._btnCreaGrafo = ft.ElevatedButton(text="Vittorie Piloti", on_click=self._controller.handleCreaGrafo)
-
-        cont = ft.Container(self._ddAnno, width=250, alignment=ft.alignment.top_left)
-        row1 = ft.Row([cont, self._btnCreaGrafo], alignment=ft.MainAxisAlignment.CENTER,
+        cont = ft.Container(self._ddSeason, width=250, alignment=ft.alignment.top_left)
+        row1 = ft.Row([cont, self._btnSelectedSeason], alignment=ft.MainAxisAlignment.CENTER,
                       vertical_alignment=ft.CrossAxisAlignment.END)
 
-        self._txtIntK = ft.TextField(label="Dimensione K",disabled = True)
-        self._btnCerca = ft.ElevatedButton(text="Cerca Dream Team",
-                                           on_click=self._controller.handleCerca,
-                                           disabled = True)
+        self._ddRace = ft.Dropdown(label="Gara")
+        self._simRace = ft.ElevatedButton(text="Simula gara", disabled = True)
 
-        row2 = ft.Row([ft.Container(self._txtIntK, width=250),
-            ft.Container(self._btnCerca, width=250)
+        row2 = ft.Row([ft.Container(self._ddRace, width=250),
+            ft.Container(self._simRace, width=250)
         ], alignment=ft.MainAxisAlignment.CENTER)
 
         self._page.controls.append(row1)
@@ -50,7 +44,6 @@ class View(ft.UserControl):
         self.txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
         self._page.controls.append(self.txt_result)
         self._page.update()
-
 
     @property
     def controller(self):
@@ -71,9 +64,3 @@ class View(ft.UserControl):
         self._page.dialog = dlg
         dlg.open = True
         self._page.update()
-
-    def disable_row(self,e):
-        self._txtIntK.value = ""
-        self._txtIntK.disabled = True
-        self._btnCerca.disabled = True
-        self.update_page()
